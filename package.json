@@ -1,0 +1,49 @@
+{
+    "name": "i2p-coral",
+    "version": "0.0.1",
+    "publisher": "i2p-hub",
+    "engines": {
+        "vscode": "^1.25.0"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "displayName": "I2P Coral",
+    "description": "Syntax highlighting for the Coral Programming Language.",
+    "categories": [
+        "Programming Languages",
+        "Education"
+    ],
+    "keywords": [
+        "i2p",
+        "cs-200",
+        "coral",
+        "syntax highlighting",
+        "programming languages",
+        "education"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/i2p-hub/coral-highlighter"
+    },
+    "contributes": {
+        "languages": [
+            {
+                "id": "coral",
+                "aliases": [
+                    "Coral",
+                    "coral"
+                ],
+                "extensions": [
+                    ".coral"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "coral",
+                "scopeName": "source.coral",
+                "path": "./syntaxes/coral.tmLanguage.json"
+            }
+        ]
+    }
+}

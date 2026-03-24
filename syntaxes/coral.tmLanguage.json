@@ -1,0 +1,535 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/refs/heads/master/tmlanguage.json",
+  "name": "Coral",
+  "scopeName": "source.coral",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#function-declarations"
+    },
+    {
+      "include": "#statements"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#numeric-literal"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#delimiters"
+    },
+    {
+      "include": "#identifiers"
+    }
+  ],
+  "repository": {
+    "statements": {
+      "patterns": [
+        {
+          "include": "#declarations"
+        },
+        {
+          "include": "#input-statements"
+        },
+        {
+          "include": "#output-statements"
+        },
+        {
+          "include": "#conditional-statements"
+        },
+        {
+          "include": "#loop-statements"
+        },
+        {
+          "include": "#assignment-statements"
+        },
+        {
+          "include": "#standalone-keywords"
+        }
+      ]
+    },
+
+    "expression-patterns": {
+      "patterns": [
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#builtins"
+        },
+        {
+          "include": "#types"
+        },
+        {
+          "include": "#numeric-literal"
+        },
+        {
+          "include": "#operators"
+        },
+        {
+          "include": "#delimiters"
+        },
+        {
+          "include": "#identifiers"
+        }
+      ]
+    },
+
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.coral",
+          "begin": "^\\s*//",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "name": "keyword.codetag.notation",
+              "match": "\\b(?:TODO|FIXME|NOTE|BUG|HACK|XXX)\\b:?"
+            }
+          ]
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.coral",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.character.escape.coral",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+
+    "function-declarations": {
+      "patterns": [
+        {
+          "name": "meta.function.declaration.coral",
+          "begin": "^(\\s*)(Function)\\s+([A-Za-z][A-Za-z0-9_]*)\\s*(\\()",
+          "beginCaptures": {
+            "2": {
+              "name": "storage.type.function.coral"
+            },
+            "3": {
+              "name": "entity.name.function.coral"
+            },
+            "4": {
+              "name": "punctuation.section.group.begin"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "name": "punctuation.section.group.end",
+              "match": "\\)"
+            },
+            {
+              "name": "keyword.control.coral",
+              "match": "\\breturns\\b"
+            },
+            {
+              "name": "storage.type.coral",
+              "match": "\\b(?:integer|float|nothing)\\b"
+            },
+            {
+              "name": "punctuation.separator.parameter",
+              "match": ","
+            },
+            {
+              "name": "variable.parameter.coral",
+              "match": "\\b[A-Za-z][A-Za-z0-9_]*\\b"
+            }
+          ]
+        }
+      ]
+    },
+
+    "declarations": {
+      "patterns": [
+        {
+          "name": "meta.declaration.array.coral",
+          "begin": "^(\\s*)((?:integer|float))\\s+(array)(\\()",
+          "beginCaptures": {
+            "2": {
+              "name": "storage.type.coral"
+            },
+            "3": {
+              "name": "storage.modifier.coral"
+            },
+            "4": {
+              "name": "punctuation.section.group.begin"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "name": "punctuation.section.group.end",
+              "match": "\\)"
+            },
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        },
+        {
+          "name": "meta.declaration.variable.coral",
+          "match": "^(\\s*)((?:integer|float))\\s+([A-Za-z][A-Za-z0-9_]*)\\s*$",
+          "captures": {
+            "2": {
+              "name": "storage.type.coral"
+            },
+            "3": {
+              "name": "variable.other.definition.coral"
+            }
+          }
+        },
+        {
+          "name": "meta.declaration.array.trailing-name.coral",
+          "match": "^(\\s*)((?:integer|float))\\s+(array)\\((?:[^)]*)\\)\\s+([A-Za-z][A-Za-z0-9_]*)\\s*$",
+          "captures": {
+            "2": {
+              "name": "storage.type.coral"
+            },
+            "3": {
+              "name": "storage.modifier.coral"
+            },
+            "4": {
+              "name": "variable.other.definition.coral"
+            }
+          }
+        }
+      ]
+    },
+
+    "input-statements": {
+      "patterns": [
+        {
+          "name": "meta.input.statement.coral",
+          "begin": "^(\\s*)([A-Za-z][A-Za-z0-9_]*(?:\\[[^\\]]+\\])?)\\s*(=)\\s*(Get)\\s+(next)\\s+(input)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "variable.other.coral"
+            },
+            "3": {
+              "name": "keyword.operator.assignment.coral"
+            },
+            "4": {
+              "name": "keyword.control.coral"
+            },
+            "5": {
+              "name": "keyword.control.coral"
+            },
+            "6": {
+              "name": "keyword.control.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        }
+      ]
+    },
+
+    "output-statements": {
+      "patterns": [
+        {
+          "name": "meta.output.statement.coral",
+          "begin": "^(\\s*)(Put)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "name": "keyword.control.coral",
+              "match": "\\b(?:to|output|with|decimal|places)\\b"
+            },
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        }
+      ]
+    },
+
+    "conditional-statements": {
+      "patterns": [
+        {
+          "name": "meta.conditional.if.coral",
+          "begin": "^(\\s*)(if)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.conditional.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        },
+        {
+          "name": "meta.conditional.elseif.coral",
+          "begin": "^(\\s*)(elseif)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.conditional.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        },
+        {
+          "name": "meta.conditional.else.coral",
+          "match": "^(\\s*)(else)\\s*$",
+          "captures": {
+            "2": {
+              "name": "keyword.control.conditional.coral"
+            }
+          }
+        }
+      ]
+    },
+
+    "loop-statements": {
+      "patterns": [
+        {
+          "name": "meta.loop.while.coral",
+          "begin": "^(\\s*)(while)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.loop.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        },
+        {
+          "name": "meta.loop.for.coral",
+          "begin": "^(\\s*)(for)\\b",
+          "beginCaptures": {
+            "2": {
+              "name": "keyword.control.loop.coral"
+            }
+          },
+          "end": "(?=$)",
+          "patterns": [
+            {
+              "name": "punctuation.separator.statement.coral",
+              "match": ";"
+            },
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        }
+      ]
+    },
+
+    "assignment-statements": {
+      "patterns": [
+        {
+          "name": "meta.assignment.statement.coral",
+          "begin": "^(\\s*)([A-Za-z][A-Za-z0-9_]*(?:\\[[^\\]]+\\])?(?:\\.size)?)\\s*(=)",
+          "beginCaptures": {
+            "2": {
+              "name": "variable.other.coral"
+            },
+            "3": {
+              "name": "keyword.operator.assignment.coral"
+            }
+          },
+          "end": "(?=$)",
+          "contentName": "meta.assignment.expression.coral",
+          "patterns": [
+            {
+              "include": "#expression-patterns"
+            }
+          ]
+        }
+      ]
+    },
+
+    "standalone-keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.coral",
+          "match": "\\b(?:Get|next|input|Put|to|output|with|decimal|places|returns)\\b"
+        },
+        {
+          "name": "keyword.operator.logical.coral",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        {
+          "name": "keyword.control.conditional.coral",
+          "match": "\\b(?:if|elseif|else)\\b"
+        },
+        {
+          "name": "keyword.control.loop.coral",
+          "match": "\\b(?:while|for)\\b"
+        },
+        {
+          "name": "storage.type.function.coral",
+          "match": "\\bFunction\\b"
+        }
+      ]
+    },
+
+    "builtins": {
+      "patterns": [
+        {
+          "name": "support.function.builtin.coral",
+          "match": "\\b(?:SquareRoot|RaiseToPower|AbsoluteValue|RandomNumber|SeedRandomNumbers)\\b"
+        },
+        {
+          "name": "support.variable.property.coral",
+          "match": "\\bsize\\b"
+        }
+      ]
+    },
+
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.coral",
+          "match": "\\b(?:integer|float|nothing)\\b"
+        },
+        {
+          "name": "storage.modifier.coral",
+          "match": "\\barray\\b"
+        }
+      ]
+    },
+
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.coral",
+          "match": "(?:==|!=|>=|<=|>|<)"
+        },
+        {
+          "name": "keyword.operator.assignment.coral",
+          "match": "="
+        },
+        {
+          "name": "keyword.operator.logical.coral",
+          "match": "\\b(?:and|or|not)\\b"
+        },
+        {
+          "name": "keyword.operator.arithmetic.coral",
+          "match": "(?:\\+|-|\\*|/|%)"
+        }
+      ]
+    },
+
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "punctuation.separator.parameter.coral",
+          "match": ","
+        },
+        {
+          "name": "punctuation.separator.statement.coral",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.accessor.dot.coral",
+          "match": "\\."
+        },
+        {
+          "name": "punctuation.section.group.begin",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.section.group.end",
+          "match": "\\)"
+        },
+        {
+          "name": "punctuation.section.array.begin",
+          "match": "\\["
+        },
+        {
+          "name": "punctuation.section.array.end",
+          "match": "\\]"
+        }
+      ]
+    },
+
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "entity.name.function.coral",
+          "match": "\\b(?=[A-Za-z][A-Za-z0-9_]*\\s*\\()([A-Za-z][A-Za-z0-9_]*)\\b"
+        },
+        {
+          "name": "variable.other.coral",
+          "match": "\\b[A-Za-z][A-Za-z0-9_]*\\b"
+        }
+      ]
+    },
+
+    "numeric-literal": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.coral",
+          "match": "(?<![A-Za-z0-9_])-?(?:0|[1-9][0-9_]*)\\.[0-9][0-9_]*(?![A-Za-z0-9_])"
+        },
+        {
+          "name": "constant.numeric.integer.coral",
+          "match": "(?<![A-Za-z0-9_])-?(?:0|[1-9][0-9_]*)(?![A-Za-z0-9_])"
+        },
+        {
+          "name": "constant.language.placeholder-size.coral",
+          "match": "\\?"
+        }
+      ]
+    }
+  }
+}
